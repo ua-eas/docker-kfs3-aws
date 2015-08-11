@@ -25,6 +25,18 @@ tomcat_start () {
         fi
 
         chmod -R 777  $LOGS_DIRECTORY
+        
+        # Download the WAR file if it doesn't exist
+        WAR_FILE = $TOMCAT_WEBAPPS_DIR/kfs.war
+        if [ ! -f $WAR_FILE ] 
+        then
+            MAVEN_SERVER = "https://ka-tools.mosaic.arizona.edu/nexus"
+            MAVEN_ENDPOINT = "$MAVEN_SERVER/service/local/artifact/maven/redirect"
+            WAR_SOURCE_URL = "$MAVEN_ENDPOINT?r=snapshots&g=org.kuali.kfs&a=kfs-web&v=ua-release1-SNAPSHOT&c=ua-ksd&p=war"
+            curl $WAR_SOURCE_URL -o $WAR_FILE           
+            chown kualiadm:kuali $WAR_FILE
+        fi
+        
 
         echo "Starting Tomcat application server tomcat ..." >> $LOGS_DIRECTORY/kfs-startup.log
 
