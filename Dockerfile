@@ -11,7 +11,8 @@ RUN chmod +x /usr/local/bin/*
 # RUN chown -R kualiadm:kuali /var/lib/tomcat7/webapps/kfs
 
 # create some useful shorcut environment variables
-ENV TOMCAT_WEBAPPS_DIR=/var/lib/tomcat7/webapps
+ENV TOMCAT_BASE_DIR=/var/lib/tomcat7
+ENV TOMCAT_WEBAPPS_DIR=$TOMCAT_BASE_DIR/webapps
 ENV TOMCAT_KFS_DIR=$TOMCAT_WEBAPPS_DIR/kfs
 ENV TOMCAT_KFS_WEBINF_DIR=$TOMCAT_KFS_DIR/WEB-INF
 ENV TRANSACTIONAL_DIRECTORY=/transactional

@@ -26,36 +26,51 @@ tomcat_start () {
 
         chmod -R 777  $LOGS_DIRECTORY
         
+        # Make our kfs webapp directory if it doesn't exist
+        if [ ! -d $TOMCAT_KFS_DIR ] 
+        then
+            mkdir $TOMCAT_KFS_DIR
+        fi
+        
         # Download the WAR file if it doesn't exist
-        WAR_FILE="$TOMCAT_WEBAPPS_DIR/kfs.war"
+        WAR_FILE="$TOMCAT_KFS_DIR/kfs.war"
         echo "Looking for $WAR_FILE..."
         if [ ! -f $WAR_FILE ] 
         then
             MAVEN_SERVER="https://ka-tools.mosaic.arizona.edu/nexus"
             MAVEN_ENDPOINT="$MAVEN_SERVER/service/local/artifact/maven/redirect"
             WAR_SOURCE_URL="$MAVEN_ENDPOINT?r=snapshots&g=org.kuali.kfs&a=kfs-web&v=ua-release1-SNAPSHOT&c=ua-ksd&p=war"
-            curl "$WAR_SOURCE_URL" -o $WAR_FILE           
+            curl -L "$WAR_SOURCE_URL" -o $WAR_FILE           
             chown kualiadm:kuali $WAR_FILE
+            # Extract the WAR file
+            cd $TOMCAT_KFS_DIR
+            jar -xf $WAR_FILE
         fi
         
 
         echo "Starting Tomcat application server tomcat ..." >> $LOGS_DIRECTORY/kfs-startup.log
 
         
+        # Make a bin directory if it doesn't exist
+        if [ ! -d $TOMCAT_BASE_DIR/bin ] 
+        then
+            mkdir $TOMCAT_BASE_DIR/bin
+        fi
+
         # copy in tomcat configuration files
-        cp $TOMCAT_CONFIG_DIRECTORY/server.xml /var/lib/tomcat7/conf/
-        cp $SECURITY_DIRECTORY/tomcat-users.xml /var/lib/tomcat7/conf/
-        cp $TOMCAT_CONFIG_DIRECTORY/logging.properties /var/lib/tomcat7/conf
-        cp $TOMCAT_CONFIG_DIRECTORY/setenv.sh /var/lib/tomcat7/bin/
+        cp $TOMCAT_CONFIG_DIRECTORY/server.xml $TOMCAT_BASE_DIR/conf/
+        cp $SECURITY_DIRECTORY/tomcat-users.xml $TOMCAT_BASE_DIR/conf/
+        cp $TOMCAT_CONFIG_DIRECTORY/logging.properties $TOMCAT_BASE_DIR/conf
+        cp $TOMCAT_CONFIG_DIRECTORY/setenv.sh $TOMCAT_BASE_DIR/bin/
         cp $TOMCAT_CONFIG_DIRECTORY/log4j.properties $TOMCAT_KFS_WEBINF_DIR/classes
 
-        chown kualiadm:kuali /var/lib/tomcat7/bin/setenv.sh
-        chmod +x /var/lib/tomcat7/bin/setenv.sh
+        chown kualiadm:kuali $TOMCAT_BASE_DIR/bin/setenv.sh
+        chmod +x $TOMCAT_BASE_DIR/bin/setenv.sh
 
-        service tomcat7 start >> $LOGS_DIRECTORY/kfs-startup.log
+        service tomcat7 start
         
-        # tail the startup log to keep tomcat running
-        tail -f $LOGS_DIRECTORY/kfs-startup.log
+        # tail catalina.out to keep tomcat running
+        tail -f $LOGS_DIRECTORY/catalina.out
     fi
 
     return;
