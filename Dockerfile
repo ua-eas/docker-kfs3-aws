@@ -1,11 +1,11 @@
 FROM easksd/tomcat7
 
-# RUN groupadd -r kuali
-# RUN useradd -r -g kuali kualiadm
+RUN groupadd -r kuali
+RUN useradd -r -g kuali kualiadm
 
 # copy in the kfs build and utility scripts
 COPY kfs.war /var/lib/tomcat7/webapps/kfs.war
-COPY bin /usr/local/
+COPY bin /usr/local/bin/
 
 # set kfs web app directory owner and group
 RUN chmod +x /usr/local/bin/*
