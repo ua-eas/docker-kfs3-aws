@@ -15,6 +15,11 @@ tomcat_start () {
     then
         echo "Tomcat application server tomcat is already running." >> $LOGS_DIRECTORY/kfs-startup.log
     else
+    
+        # re-map the tomcat logs directory to our mapped container volume
+        rm -f $TOMCAT_BASE_DIR/logs
+        ln -s $LOGS_DIRECTORY $TOMCAT_BASE_DIR/conf
+    
         # make logs directory and kfs-startup.log if they do not exists
         if [ ! -f $LOGS_DIRECTORY/kfs-startup.log ] 
         then
@@ -69,8 +74,12 @@ tomcat_start () {
 
         service tomcat7 start
         
-        # tail catalina.out to keep tomcat running
-        tail -f $LOGS_DIRECTORY/catalina.out
+        #Override the exit command to prevent accidental container distruction 
+        echo 'alias exit="echo Are you sure? this will kill the container. use Ctrl + p, Ctrl + q to detach or ctrl + d to exit"' > ~/.bashrc
+
+        #Run bash to keep container running and provide interactive mode
+        /bin/bash
+
     fi
 
     return;
