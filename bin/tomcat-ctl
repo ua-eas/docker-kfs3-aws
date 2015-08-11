@@ -18,7 +18,7 @@ tomcat_start () {
     
         # re-map the tomcat logs directory to our mapped container volume
         rm -f $TOMCAT_BASE_DIR/logs
-        ln -s $LOGS_DIRECTORY $TOMCAT_BASE_DIR/conf
+        ln -s $LOGS_DIRECTORY $TOMCAT_BASE_DIR/logs
     
         # make logs directory and kfs-startup.log if they do not exists
         if [ ! -f $LOGS_DIRECTORY/kfs-startup.log ] 
