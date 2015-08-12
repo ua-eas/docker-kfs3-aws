@@ -6,6 +6,9 @@ RUN useradd -r -g kuali kualiadm
 # copy in the tomcat utility scripts
 COPY bin /usr/local/bin/
 
+# copy in the new relic jar file
+COPY classes /usr/share/tomcat7/lib/
+
 # set kfs web app directory owner and group
 RUN chmod +x /usr/local/bin/*
 # RUN chown -R kualiadm:kuali /var/lib/tomcat7/webapps/kfs
