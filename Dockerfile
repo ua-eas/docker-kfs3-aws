@@ -1,7 +1,6 @@
 FROM easksd/tomcat7
 
-RUN groupadd -r kuali
-RUN useradd -r -g kuali kualiadm
+RUN groupadd -r kuali && useradd -r -g kuali kualiadm
 
 # copy in the tomcat utility scripts
 COPY bin /usr/local/bin/
@@ -11,7 +10,6 @@ COPY classes /usr/share/tomcat7/lib/
 
 # set kfs web app directory owner and group
 RUN chmod +x /usr/local/bin/*
-# RUN chown -R kualiadm:kuali /var/lib/tomcat7/webapps/kfs
 
 # create some useful shorcut environment variables
 ENV TOMCAT_BASE_DIR=/var/lib/tomcat7

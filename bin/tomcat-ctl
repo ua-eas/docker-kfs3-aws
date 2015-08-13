@@ -51,34 +51,32 @@ tomcat_start () {
             cd $TOMCAT_KFS_DIR
             jar -xf $WAR_FILE
         fi
-        
 
         echo "Starting Tomcat application server tomcat ..." >> $LOGS_DIRECTORY/kfs-startup.log
-
-        
-        # Make a bin directory if it doesn't exist
-        if [ ! -d $TOMCAT_BASE_DIR/bin ] 
-        then
-            mkdir $TOMCAT_BASE_DIR/bin
-        fi
 
         # copy in tomcat configuration files
         cp $TOMCAT_CONFIG_DIRECTORY/server.xml $TOMCAT_BASE_DIR/conf/
         cp $SECURITY_DIRECTORY/tomcat-users.xml $TOMCAT_BASE_DIR/conf/
         cp $TOMCAT_CONFIG_DIRECTORY/logging.properties $TOMCAT_BASE_DIR/conf
-        cp $TOMCAT_CONFIG_DIRECTORY/setenv.sh $TOMCAT_BASE_DIR/bin/
         cp $TOMCAT_CONFIG_DIRECTORY/log4j.properties $TOMCAT_KFS_WEBINF_DIR/classes
 
+        # copy in New Relic config file
+        cp $SECURITY_DIRECTORY/newrelic.yml /usr/share/tomcat7/lib/
+        
+        # copy in oracle JDBC drivers
+        cp $TOMCAT_CONFIG_DIRECTORY/classes/* /usr/share/tomcat7/lib/
+
+        cp $TOMCAT_CONFIG_DIRECTORY/setenv.sh /usr/share/tomcat7/bin/
         chown kualiadm:kuali $TOMCAT_BASE_DIR/bin/setenv.sh
         chmod +x $TOMCAT_BASE_DIR/bin/setenv.sh
 
-        /usr/share/tomcat7/bin/catalina.sh run
+        /usr/share/tomcat7/bin/catalina.sh start
         
         #Override the exit command to prevent accidental container distruction 
         echo 'alias exit="echo Are you sure? this will kill the container. use Ctrl + p, Ctrl + q to detach or ctrl + d to exit"' > ~/.bashrc
 
         #Run bash to keep container running and provide interactive mode
-        # /bin/bash
+        /bin/bash
 
     fi
 
@@ -90,7 +88,7 @@ tomcat_stop() {
     then
         echo "Stopping Tomcat application server tomcat ..."
 
-        service tomcat7 stop
+        /usr/share/tomcat7/bin/catalina.sh stop
 
         sleep 3
         if check_process
