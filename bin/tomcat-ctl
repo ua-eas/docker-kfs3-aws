@@ -70,13 +70,10 @@ tomcat_start () {
         chown kualiadm:kuali $TOMCAT_BASE_DIR/bin/setenv.sh
         chmod +x $TOMCAT_BASE_DIR/bin/setenv.sh
 
-        /usr/share/tomcat7/bin/catalina.sh run
+        /usr/share/tomcat7/bin/catalina.sh start
         
-        #Override the exit command to prevent accidental container distruction 
-        # echo 'alias exit="echo Are you sure? this will kill the container. use Ctrl + p, Ctrl + q to detach or ctrl + d to exit"' > ~/.bashrc
-
-        #Run bash to keep container running and provide interactive mode
-        # /bin/bash
+        # Tail the tomcat log file to keep the container alive
+        tail -f /logs/catalina.out
 
     fi
 
