@@ -19,7 +19,13 @@ tomcat_start () {
         # re-map the tomcat logs directory to our mapped container volume
         rm -f $TOMCAT_BASE_DIR/logs
         ln -s $LOGS_DIRECTORY $TOMCAT_BASE_DIR/logs
-    
+        
+        # ensure that the tomcat temp directory exists
+        if [ ! -d $TOMCAT_BASE_DIR/temp ] 
+        then
+            mkdir $TOMCAT_BASE_DIR/temp
+        fi
+
         # make logs directory and kfs-startup.log if they do not exists
         if [ ! -f $LOGS_DIRECTORY/kfs-startup.log ] 
         then
@@ -71,13 +77,13 @@ tomcat_start () {
             MAVEN_ENDPOINT="$MAVEN_SERVER/service/local/artifact/maven/redirect"
             WAR_SOURCE_URL="$MAVEN_ENDPOINT?r=$APP_REPO&g=org.kuali.kfs&a=kfs-web&v=$APP_VERSION&c=ua-ksd&p=war"
             curl -L "$WAR_SOURCE_URL" -o $WAR_FILE           
+            echo "Downloaded $WAR_SOURCE_URL" >> $LOGS_DIRECTORY/kfs-startup.log
             chown kualiadm:kuali $WAR_FILE
             # Extract the WAR file
             cd $TOMCAT_KFS_DIR
             jar -xf $WAR_FILE
         fi
 
-        echo "Downloaded $WAR_SOURCE_URL" >> $LOGS_DIRECTORY/kfs-startup.log
         echo "Starting Tomcat application server tomcat ..." >> $LOGS_DIRECTORY/kfs-startup.log
 
         # copy in tomcat configuration files
