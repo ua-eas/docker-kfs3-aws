@@ -30,7 +30,7 @@ ENV KFS_REPOSITORY_DEV=snapshots
 ENV KFS_VERSION_TST=ua-release2-SNAPSHOT
 ENV KFS_REPOSITORY_TST=snapshots
 
-ENV KFS_VERSION_STG=ua-release1
+ENV KFS_VERSION_STG=ua-release2
 ENV KFS_REPOSITORY_STG=releases
 
 # setup log rotate
