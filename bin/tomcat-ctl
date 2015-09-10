@@ -19,7 +19,13 @@ tomcat_start () {
         # re-map the tomcat logs directory to our mapped container volume
         rm -f $TOMCAT_BASE_DIR/logs
         ln -s $LOGS_DIRECTORY $TOMCAT_BASE_DIR/logs
-    
+        
+        # ensure that the tomcat temp directory exists
+        if [ ! -d $TOMCAT_BASE_DIR/temp ] 
+        then
+            mkdir $TOMCAT_BASE_DIR/temp
+        fi
+
         # make logs directory and kfs-startup.log if they do not exists
         if [ ! -f $LOGS_DIRECTORY/kfs-startup.log ] 
         then
@@ -37,6 +43,31 @@ tomcat_start () {
             mkdir $TOMCAT_KFS_DIR
         fi
         
+        # Figure out what artifact we need for this application environment
+        case "$KFS_ENV_NAME" in
+            'dev')
+                   APP_VERSION=$KFS_VERSION_DEV
+                   APP_REPO=$KFS_REPOSITORY_DEV
+                   ;;
+            'tst')
+                   APP_VERSION=$KFS_VERSION_TST
+                   APP_REPO=$KFS_REPOSITORY_TST
+                   ;;
+            'stg')
+                   APP_VERSION=$KFS_VERSION_STG
+                   APP_REPO=$KFS_REPOSITORY_STG
+                   ;;
+            'prd')
+                   APP_VERSION=$KFS_VERSION_PRD
+                   APP_REPO=$KFS_REPOSITORY_PRD
+                   ;;
+            *)
+                echo "Invalid KFS_ENV_NAME: $KFS_ENV_NAME." >> $LOGS_DIRECTORY/kfs-startup.log
+                echo "Invalid KFS_ENV_NAME: $KFS_ENV_NAME."
+                exit 1
+                   ;;
+        esac
+        
         # Download the WAR file if it doesn't exist
         WAR_FILE="$TOMCAT_KFS_DIR/kfs.war"
         echo "Looking for $WAR_FILE..."
@@ -44,8 +75,9 @@ tomcat_start () {
         then
             MAVEN_SERVER="https://ka-tools.mosaic.arizona.edu/nexus"
             MAVEN_ENDPOINT="$MAVEN_SERVER/service/local/artifact/maven/redirect"
-            WAR_SOURCE_URL="$MAVEN_ENDPOINT?r=snapshots&g=org.kuali.kfs&a=kfs-web&v=ua-release1-SNAPSHOT&c=ua-ksd&p=war"
+            WAR_SOURCE_URL="$MAVEN_ENDPOINT?r=$APP_REPO&g=org.kuali.kfs&a=kfs-web&v=$APP_VERSION&c=ua-ksd&p=war"
             curl -L "$WAR_SOURCE_URL" -o $WAR_FILE           
+            echo "Downloaded $WAR_SOURCE_URL" >> $LOGS_DIRECTORY/kfs-startup.log
             chown kualiadm:kuali $WAR_FILE
             # Extract the WAR file
             cd $TOMCAT_KFS_DIR

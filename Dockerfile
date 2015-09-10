@@ -23,6 +23,16 @@ ENV SECURITY_DIRECTORY=/security
 ENV TOMCAT_CONFIG_DIRECTORY=/configuration/tomcat-config
 ENV KFS_CONFIG_DIRECTORY=/configuration/kfs-config
 
+# Update Environment target versions
+ENV KFS_VERSION_DEV=ua-release2-SNAPSHOT
+ENV KFS_REPOSITORY_DEV=snapshots
+
+ENV KFS_VERSION_TST=ua-release2-SNAPSHOT
+ENV KFS_REPOSITORY_TST=snapshots
+
+ENV KFS_VERSION_STG=ua-release2
+ENV KFS_REPOSITORY_STG=releases
+
 # setup log rotate
 RUN mv /etc/cron.daily/logrotate /etc/cron.hourly/logrotate
 ADD logrotate /etc/logrotate.d/tomcat7
