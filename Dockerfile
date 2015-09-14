@@ -24,10 +24,10 @@ ENV TOMCAT_CONFIG_DIRECTORY=/configuration/tomcat-config
 ENV KFS_CONFIG_DIRECTORY=/configuration/kfs-config
 
 # Update Environment target versions
-ENV KFS_VERSION_DEV=ua-release2-SNAPSHOT
+ENV KFS_VERSION_DEV=ua-release3-SNAPSHOT
 ENV KFS_REPOSITORY_DEV=snapshots
 
-ENV KFS_VERSION_TST=ua-release2-SNAPSHOT
+ENV KFS_VERSION_TST=ua-release3-SNAPSHOT
 ENV KFS_REPOSITORY_TST=snapshots
 
 ENV KFS_VERSION_STG=ua-release2
