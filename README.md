@@ -7,10 +7,10 @@ Run as a background container
 -----------------------------
 
     docker run -d --name kfs \
-     -v /kuali-configs/configuration/tst:/configuration:ro \
+     -v /kuali-configs/configuration/dev:/configuration:ro \
      -v /var/log/kuali:/logs \
-     -v /transaction/data/fs/tst:/transactional \
-     -v /kuali-configs/security/tst:/security:ro \
+     -v /transaction/data/fs/dev:/transactional \
+     -v /kuali-configs/security/dev:/security:ro \
      -e KFS_ENV_NAME=dev \
      -p 0.0.0.0:80:8080 \
      -p 0.0.0.0:8444:8444 \
