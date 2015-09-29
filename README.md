@@ -5,6 +5,7 @@ This docker project defines an image which is used for our main Financial system
 
 Run as a background container
 -----------------------------
+If running in dev, use:
 
     docker run -d --name kfs \
      -v /kuali-configs/configuration/dev:/configuration:ro \
