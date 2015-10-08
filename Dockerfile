@@ -24,13 +24,13 @@ ENV TOMCAT_CONFIG_DIRECTORY=/configuration/tomcat-config
 ENV KFS_CONFIG_DIRECTORY=/configuration/kfs-config
 
 # Update Environment target versions
-ENV KFS_VERSION_DEV=ua-release3-SNAPSHOT
+ENV KFS_VERSION_DEV=ua-release4-SNAPSHOT
 ENV KFS_REPOSITORY_DEV=snapshots
 
-ENV KFS_VERSION_TST=ua-release3-SNAPSHOT
+ENV KFS_VERSION_TST=ua-release4-SNAPSHOT
 ENV KFS_REPOSITORY_TST=snapshots
 
-ENV KFS_VERSION_STG=ua-release2
+ENV KFS_VERSION_STG=ua-release3
 ENV KFS_REPOSITORY_STG=releases
 
 # setup log rotate
