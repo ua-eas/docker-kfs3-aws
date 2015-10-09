@@ -108,7 +108,7 @@ tomcat_start () {
 		/usr/bin/jar -xf $TOMCAT_KFS_DIR/WEB-INF/lib/kfs-core-ua*
 		
 		# run liquibase here
-		liquibase_update_kfs.sh
+		liquibase_update_kfs.sh $APP_VERSION
 		
         cp $TOMCAT_CONFIG_DIRECTORY/setenv.sh /usr/share/tomcat7/bin/
         chown kualiadm:kuali $TOMCAT_BASE_DIR/bin/setenv.sh
