@@ -1,7 +1,7 @@
-#!/bin/sh
+#!/bin/bash
 #Update Database with Liquibase Changesets if they exist
 LIQUIBASE_BIN=/usr/local/bin/
-LIQUIBASE_CHANGELOG_DIR=$TOMCAT_KFS_DIR/kfs-core/src/main/resources/edu/arizona/kfs/db/changelog
+LIQUIBASE_CHANGELOG_DIR=$TOMCAT_KFS_DIR/changelogs/edu/arizona/kfs/db/changelog
 
 cd $LIQUIBASE_CHANGELOG_DIR
 

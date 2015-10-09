@@ -98,6 +98,15 @@ tomcat_start () {
         # copy in oracle JDBC drivers
         cp $TOMCAT_CONFIG_DIRECTORY/classes/* $TOMCAT_SHARE_LIB/
 
+		# create new directory to hold the files extracted from kfs-core-ua jar file
+		mkdir -p $TOMCAT_KFS_DIR/changelogs/
+		
+		# cd to the new directory for changelog files
+		cd $TOMCAT_KFS_DIR/changelogs/
+		
+		# extract files in kfs-core-ua* jar
+		/usr/bin/jar -xf $TOMCAT_KFS_DIR/WEB-INF/lib/kfs-core-ua*
+		
 		# run liquibase here
 		liquibase_update_kfs.sh
 		
