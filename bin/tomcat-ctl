@@ -93,11 +93,23 @@ tomcat_start () {
         cp $TOMCAT_CONFIG_DIRECTORY/log4j.properties $TOMCAT_KFS_WEBINF_DIR/classes
 
         # copy in New Relic config file
-        cp $SECURITY_DIRECTORY/newrelic.yml /usr/share/tomcat7/lib/
+        cp $SECURITY_DIRECTORY/newrelic.yml $TOMCAT_SHARE_LIB/
         
         # copy in oracle JDBC drivers
-        cp $TOMCAT_CONFIG_DIRECTORY/classes/* /usr/share/tomcat7/lib/
+        cp $TOMCAT_CONFIG_DIRECTORY/classes/* $TOMCAT_SHARE_LIB/
 
+		# create new directory to hold the files extracted from kfs-core-ua jar file
+		mkdir -p $TOMCAT_KFS_DIR/changelogs/
+		
+		# cd to the new directory for changelog files
+		cd $TOMCAT_KFS_DIR/changelogs/
+		
+		# extract files in kfs-core-ua* jar
+		/usr/bin/jar -xf $TOMCAT_KFS_DIR/WEB-INF/lib/kfs-core-ua*
+		
+		# run liquibase here
+		liquibase_update_kfs.sh $APP_VERSION
+		
         cp $TOMCAT_CONFIG_DIRECTORY/setenv.sh /usr/share/tomcat7/bin/
         chown kualiadm:kuali $TOMCAT_BASE_DIR/bin/setenv.sh
         chmod +x $TOMCAT_BASE_DIR/bin/setenv.sh
