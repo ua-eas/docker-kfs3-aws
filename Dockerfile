@@ -28,7 +28,7 @@ ENV KFS_REPOSITORY_DEV=snapshots
 ENV KFS_VERSION_TST=ua-release4-SNAPSHOT
 ENV KFS_REPOSITORY_TST=snapshots
 
-ENV KFS_VERSION_STG=ua-release3
+ENV KFS_VERSION_STG=ua-release4
 ENV KFS_REPOSITORY_STG=releases
 
 # copy in the new relic jar file
