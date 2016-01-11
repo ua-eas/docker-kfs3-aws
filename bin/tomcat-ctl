@@ -4,7 +4,7 @@ KFS_STARTUP_LOG="kfs-startup.log"
 
 # Basic logging command to put timestamps in front of things
 log() {
-  date +"%b%e, %Y %r $*" >> "$LOGS_DIRECTORY/$KFS_STARTUP_LOG"
+  date +"%b %e, %Y %r $*" >> "$LOGS_DIRECTORY/$KFS_STARTUP_LOG"
 }
 
 echo_time() {
