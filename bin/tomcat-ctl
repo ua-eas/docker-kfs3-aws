@@ -131,6 +131,9 @@ tomcat_start () {
     chown kualiadm:kuali $TOMCAT_BASE_DIR/bin/setenv.sh
     chmod +x $TOMCAT_BASE_DIR/bin/setenv.sh
 
+    #run logrotate on our log files
+    logrotate -f /etc/logrotate.conf
+
     /usr/share/tomcat7/bin/catalina.sh start
 
     # Tail the tomcat log file to keep the container alive

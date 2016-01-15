@@ -1,9 +1,14 @@
-/var/log/tomcat7/catalina.out {
+/logs/localhost.log
+/logs/kfs-startup.log
+/logs/localhost_access_log.log
+/logs/manager.log
+/logs/host-manager.log
+/logs/catalina.log
+/logs/catalina.out {
   copytruncate
   daily
-  rotate 8
-  nocompress
+  rotate 52
+  compress
   missingok
-  create 640 tomcat7 adm
-  size 500m
+  notifempty
 }
