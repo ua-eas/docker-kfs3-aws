@@ -22,13 +22,13 @@ ENV TOMCAT_CONFIG_DIRECTORY=/configuration/tomcat-config
 ENV KFS_CONFIG_DIRECTORY=/configuration/kfs-config
 
 # Update Environment target versions
-ENV KFS_VERSION_DEV=ua-release4-SNAPSHOT
+ENV KFS_VERSION_DEV=ua-release5-SNAPSHOT
 ENV KFS_REPOSITORY_DEV=snapshots
 
-ENV KFS_VERSION_TST=ua-release4-SNAPSHOT
+ENV KFS_VERSION_TST=ua-release5-SNAPSHOT
 ENV KFS_REPOSITORY_TST=snapshots
 
-ENV KFS_VERSION_STG=ua-release4
+ENV KFS_VERSION_STG=ua-release5
 ENV KFS_REPOSITORY_STG=releases
 
 # copy in the new relic jar file
