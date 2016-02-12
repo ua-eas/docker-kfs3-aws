@@ -113,14 +113,18 @@ tomcat_start () {
     log "Loading changelog files for liquibase."
     echo_time "Loading changelog files for liquibase"
 
-	# create new directory to hold the files extracted from kfs-core-ua jar file
-	mkdir -p $TOMCAT_KFS_DIR/changelogs/
+    # create new directory to hold the files extracted from kfs-core-ua jar file
+    mkdir -p $TOMCAT_KFS_CORE_DIR
 
-	# cd to the new directory for changelog files
-	cd $TOMCAT_KFS_DIR/changelogs/
+    # create new directory to hold the UA changelog files
+    mkdir -p $UA_DB_CHANGELOGS_DIR
 
-	# extract files in kfs-core-ua* jar
-	/usr/bin/jar -xf $TOMCAT_KFS_DIR/WEB-INF/lib/kfs-core-ua*
+    # extract files in kfs-core-ua* jar
+    cd $TOMCAT_KFS_CORE_DIR
+    /usr/bin/jar -xf $TOMCAT_KFS_DIR/WEB-INF/lib/kfs-core-ua*
+
+    # copy edu changelog files to changelogs directory
+    mv $TOMCAT_KFS_CORE_DIR/edu $UA_DB_CHANGELOGS_DIR
 
 	# run liquibase here
     log "Running liquibase update."
