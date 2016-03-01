@@ -17,5 +17,5 @@ exec /usr/bin/java -jar $LIQUIBASE_HOME/liquibase-1.9.5.jar \
 --password=$LIQUIBASE_DB_PASSWORD \
 --classpath=$TOMCAT_SHARE_LIB/ojdbc6.jar \
 --driver=oracle.jdbc.driver.OracleDriver \
---logLevel=info \
+--logLevel=debug \
 $@
