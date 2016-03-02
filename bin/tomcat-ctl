@@ -131,12 +131,18 @@ tomcat_start () {
     echo_time "Running liquibase update."
 	liquibase_update_kfs.sh $APP_VERSION
 
+    log "Completed running liquibase update"
+    echo_time "Completed running liquibase update"
+
     cp $TOMCAT_CONFIG_DIRECTORY/setenv.sh /usr/share/tomcat7/bin/
     chown kualiadm:kuali $TOMCAT_BASE_DIR/bin/setenv.sh
     chmod +x $TOMCAT_BASE_DIR/bin/setenv.sh
 
     #run logrotate on our log files
     logrotate -f /etc/logrotate.conf
+
+    log "Starting up tomcat"
+    echo_time "Starting up tomcat"
 
     /usr/share/tomcat7/bin/catalina.sh start
 
