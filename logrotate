@@ -11,4 +11,5 @@
   compress
   missingok
   notifempty
+  delaycompress
 }

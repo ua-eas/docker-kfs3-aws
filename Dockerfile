@@ -42,4 +42,8 @@ RUN mv /etc/cron.daily/logrotate /etc/cron.hourly/logrotate
 ADD logrotate /etc/logrotate.d/tomcat7
 RUN chmod 644 /etc/logrotate.d/tomcat7
 
+# create status file that will persist between docker container redeploys
+RUN mkdir $CONFIG_DIRECTORY/logrotate
+RUN touch $CONFIG_DIRECTORY/logrotate/status
+
 ENTRYPOINT /usr/local/bin/tomcat-start

@@ -138,8 +138,13 @@ tomcat_start () {
     chown kualiadm:kuali $TOMCAT_BASE_DIR/bin/setenv.sh
     chmod +x $TOMCAT_BASE_DIR/bin/setenv.sh
 
-    #run logrotate on our log files
-    logrotate -f /etc/logrotate.conf
+    # configure status file, otherwise, run logrotate now
+    if [ -f $CONFIG_DIRECTORY/logrotate/status ]
+    then
+        logrotate -s $CONFIG_DIRECTORY/logrotate/status
+    else
+        logrotate -f /etc/logrotate.conf
+    fi
 
     log "Starting up tomcat"
     echo_time "Starting up tomcat"
