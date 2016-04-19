@@ -11,6 +11,7 @@ RUN chmod +x /usr/local/bin/*
 # create some useful shorcut environment variables
 ENV TOMCAT_BASE_DIR=/var/lib/tomcat7
 ENV TOMCAT_SHARE_LIB=/usr/share/tomcat7/lib
+ENV TOMCAT_SHARE_BIN=/usr/share/tomcat7/bin
 ENV TOMCAT_WEBAPPS_DIR=$TOMCAT_BASE_DIR/webapps
 ENV TOMCAT_KFS_DIR=$TOMCAT_WEBAPPS_DIR/kfs
 ENV TOMCAT_KFS_WEBINF_DIR=$TOMCAT_KFS_DIR/WEB-INF
