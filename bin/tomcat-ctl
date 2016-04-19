@@ -134,9 +134,8 @@ tomcat_start () {
     log "Completed running liquibase update"
     echo_time "Completed running liquibase update"
 
-    cp $TOMCAT_CONFIG_DIRECTORY/setenv.sh /usr/share/tomcat7/bin/
-    chown kualiadm:kuali $TOMCAT_BASE_DIR/bin/setenv.sh
-    chmod +x $TOMCAT_BASE_DIR/bin/setenv.sh
+    cp $TOMCAT_CONFIG_DIRECTORY/setenv.sh $TOMCAT_SHARE_BIN/
+    chmod +x $TOMCAT_SHARE_BIN/setenv.sh
 
     #run logrotate on our log files
     logrotate -f /etc/logrotate.conf
@@ -144,7 +143,7 @@ tomcat_start () {
     log "Starting up tomcat"
     echo_time "Starting up tomcat"
 
-    /usr/share/tomcat7/bin/catalina.sh start
+    $TOMCAT_SHARE_BIN/catalina.sh start
 
     # Tail the tomcat log file to keep the container alive
     tail -f /logs/catalina.out
