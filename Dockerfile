@@ -11,6 +11,7 @@ RUN chmod +x /usr/local/bin/*
 # create some useful shorcut environment variables
 ENV TOMCAT_BASE_DIR=/var/lib/tomcat7
 ENV TOMCAT_SHARE_LIB=/usr/share/tomcat7/lib
+ENV TOMCAT_SHARE_BIN=/usr/share/tomcat7/bin
 ENV TOMCAT_WEBAPPS_DIR=$TOMCAT_BASE_DIR/webapps
 ENV TOMCAT_KFS_DIR=$TOMCAT_WEBAPPS_DIR/kfs
 ENV TOMCAT_KFS_WEBINF_DIR=$TOMCAT_KFS_DIR/WEB-INF
@@ -25,13 +26,13 @@ ENV UA_DB_CHANGELOGS_DIR=$TOMCAT_KFS_CORE_DIR/changelogs
 ENV UA_KFS_INSTITUTIONAL_CONFIG_DIR=$TOMCAT_KFS_DIR/kfs-core-ua
 
 # Update Environment target versions
-ENV KFS_VERSION_DEV=ua-release9-SNAPSHOT
+ENV KFS_VERSION_DEV=ua-release10-SNAPSHOT
 ENV KFS_REPOSITORY_DEV=snapshots
 
-ENV KFS_VERSION_TST=ua-release9-SNAPSHOT
+ENV KFS_VERSION_TST=ua-release10-SNAPSHOT
 ENV KFS_REPOSITORY_TST=snapshots
 
-ENV KFS_VERSION_STG=ua-release9
+ENV KFS_VERSION_STG=ua-release10
 ENV KFS_REPOSITORY_STG=releases
 
 # copy in the new relic jar file
