@@ -1,8 +1,7 @@
 #!/usr/bin/perl
 
-# This perl program builds the Docker Image for KFS6.
-#
-# It does some setup work, then calls `docker build ...` with the appropriate arguments.
+# This perl program sets everything up for us to build our Docker image.
+# Call this first, then call 'docker build...' after this program runs.
 #
 # It fetches a WAR artifact from a Nexus repository, and also extracts some
 # info from the final URL to be used as further environment variables.
