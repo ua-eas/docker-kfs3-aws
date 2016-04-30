@@ -13,7 +13,6 @@
 #                     "ua-release11-SNAPSHOT"
 #
 
-use Data::Dumper;
 use strict;
 use File::Basename;
 
