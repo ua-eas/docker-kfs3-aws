@@ -73,5 +73,5 @@ my ($timestamp) = $fullURL =~ m/-([0-9]{8}\.[0-9]{6}-[0-9]+)-ua/;
 # We need to send this data back to the caller so that it can be stored as environment vars in 
 # the parent context.
 
-print "export APP_VERSION_TIMESTAMP='$timestamp'\n";
+print $timestamp . "\n";
 
