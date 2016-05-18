@@ -170,10 +170,6 @@ tomcat_start () {
         mkdir -p /git-clones
         git clone "https://github.com/ua-eas/katt-kfs-rhubarb" /git-clones/katt-kfs-rhubarb
         cd /git-clones/katt-kfs-rhubarb/ && bundle install
-        mkdir -p /git-clones/katt-kfs-rhubarb/batch_home/logs
-        mkdir -p /git-clones/katt-kfs-rhubarb/spec/live/uaf-stg
-        export BATCH_HOME=/git-clones/katt-kfs-rhubarb/batch_home
-        export RHUBARB_ENV=DEV
         cd /git-clones/katt-kfs-rhubarb/ && cap local deploy
         cd $startdir
         rm -R /git-clones
