@@ -15,7 +15,7 @@ ENV TOMCAT_SHARE_BIN=/usr/share/tomcat7/bin
 ENV TOMCAT_WEBAPPS_DIR=$TOMCAT_BASE_DIR/webapps
 ENV TOMCAT_KFS_DIR=$TOMCAT_WEBAPPS_DIR/kfs
 ENV TOMCAT_KFS_WEBINF_DIR=$TOMCAT_KFS_DIR/WEB-INF
-ENV TRANSACTIONAL_DIRECTORY=/transactional
+ENV TRANSACTIONAL_DIRECTORY=/s
 ENV CONFIG_DIRECTORY=/configuration
 ENV LOGS_DIRECTORY=/logs
 ENV SECURITY_DIRECTORY=/security
@@ -24,6 +24,13 @@ ENV KFS_CONFIG_DIRECTORY=/configuration/kfs-config
 ENV TOMCAT_KFS_CORE_DIR=$TOMCAT_KFS_DIR/kfs-core-ua
 ENV UA_DB_CHANGELOGS_DIR=$TOMCAT_KFS_CORE_DIR/changelogs
 ENV UA_KFS_INSTITUTIONAL_CONFIG_DIR=$TOMCAT_KFS_DIR/kfs-core-ua
+
+# Rhubarb environment variables
+ENV BATCH_HOME=/transactional/work
+ENV RHUBARB_CONFIG=/etc/opt/kuali/rhubarb/rhubarb-1.0
+ENV RHUBARB_LOGS=/var/opt/kuali/rhubarb/logs
+ENV RHUBARB_BASE=/var/opt/kuali/rhubarb
+ENV RHUBARB_HOME=/opt/kuali/rhubarb/rhubarb-1.0
 
 # Update Environment target versions
 ENV KFS_VERSION_DEV=ua-release12-SNAPSHOT
