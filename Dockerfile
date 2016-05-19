@@ -50,6 +50,8 @@ RUN apt-get update && apt-get install -y openssh-server make
 #set port to 2222 and listen address to 127.0.0.1
 RUN sed -i 's/Port 22/Port 2222/g' /etc/ssh/sshd_config
 RUN sed -i 's/#ListenAddress 0.0.0.0/ListenAddress 127.0.0.1/g' /etc/ssh/sshd_config
+#SSH login fix. Otherwise user is kicked off after login
+RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
 #add ssh-user
 RUN useradd ssh-user
 RUN echo "ssh-user:ssh-user" | chpasswd
