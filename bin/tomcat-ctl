@@ -172,7 +172,7 @@ tomcat_start () {
         cd /git-clones/katt-kfs-rhubarb/ && bundle install
         cd /git-clones/katt-kfs-rhubarb/ && cap local deploy
         cd $startdir
-        touch /transactional/$HOSTNAME.runnable
+        touch /transactional/work/control/$HOSTNAME.runnable
         rm -R /git-clones
         service ssh stop
     else
