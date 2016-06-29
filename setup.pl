@@ -63,7 +63,7 @@ $fullURL =~ s/If you are not automatically redirected use this url: //;
 `curl '$fullURL' -o ./files/kfs.war`;
 
 # Extract the date and timestamp info from the URL for use in tagging.
-my ($timestamp) = $fullURL =~ m/-([0-9]{8}\.[0-9]{6}-[0-9]+)-ua/;
+my ($timestamp) = $fullURL =~ m/-([0-9]{8}\.[0-9]{6}-[0-9]+)-[uU][aA]/;
 
 
 #####################################################################
