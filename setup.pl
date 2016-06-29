@@ -42,16 +42,11 @@ my $APP_VERSION = $ARGV[2];
 my $APP_CLASSIFIER = "ua-ksd";
 if (defined $ARGV[3]){
    $APP_CLASSIFIER = $ARGV[3];
-   print "Using classifier from argument: $APP_CLASSIFIER\n";
-} else {
-   print "Using default classifier: $APP_CLASSIFIER\n";
 }
 
 # Assemble the initial URL
 my $MAVEN_ENDPOINT = "$MAVEN_SERVER/service/local/artifact/maven/redirect";
 my $WAR_SOURCE_URL = "$MAVEN_ENDPOINT?r=$APP_REPO&g=org.kuali.kfs&a=kfs-web&v=$APP_VERSION&c=$APP_CLASSIFIER&p=war";
-#TODO remove
-print "DEBUG - Calculated WAR url $WAR_SOURCE_URL";
 
 # Request the initial URL from Nexus. It will respond with the latest build for that 
 # release as a 302 redirect, but the text of the return will contain the final URL.
@@ -60,8 +55,6 @@ my $resp = `curl --silent '$WAR_SOURCE_URL'`;
 # Strip off the descriptive text from the response, leaving just the final artifact URL.
 my $fullURL = $resp;
 $fullURL =~ s/If you are not automatically redirected use this url: //;
-#TODO remove
-print "DEBUG - Full url after redirect message stripped: $fullURL";
 
 # $fullURL will look something like:
 # https://ka-tools.mosaic.arizona.edu/nexus/service/local/repositories/snapshots/content/org/kuali/kfs/kfs-web/ua-release11-SNAPSHOT/kfs-web-ua-release11-20160429.062827-12-ua-ksd.war
