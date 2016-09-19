@@ -67,8 +67,8 @@ tomcat_start () {
     cp $TOMCAT_CONFIG_DIRECTORY/classes/* $TOMCAT_SHARE_LIB/
 
     # Get changelogs for liquibase
-    log "Loading changelog files for liquibase."
-    echo_time "Loading changelog files for liquibase"
+#    log "Loading changelog files for liquibase."
+#    echo_time "Loading changelog files for liquibase"
 
     # create new directory to hold the files extracted from kfs-core-ua jar file
     mkdir -p $TOMCAT_KFS_CORE_DIR
@@ -84,12 +84,14 @@ tomcat_start () {
     mv $TOMCAT_KFS_CORE_DIR/edu $UA_DB_CHANGELOGS_DIR
 
 	  # run liquibase here
-    log "Running liquibase update."
-    echo_time "Running liquibase update."
-	  liquibase_update_kfs.sh $APP_VERSION
+#    log "Running liquibase update."
+#    echo_time "Running liquibase update."
+#	  liquibase_update_kfs.sh $APP_VERSION
 
-    log "Completed running liquibase update"
-    echo_time "Completed running liquibase update"
+#    log "Completed running liquibase update"
+#    echo_time "Completed running liquibase update"
+    log "SKIPPING liquibase update for AWS environments."
+    echo_time "SKIPPING liquibase update for AWS environments."
 
     cp $TOMCAT_CONFIG_DIRECTORY/setenv.sh $TOMCAT_SHARE_BIN/
     chmod +x $TOMCAT_SHARE_BIN/setenv.sh
