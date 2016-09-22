@@ -187,7 +187,7 @@ tomcat_start () {
     $TOMCAT_SHARE_BIN/catalina.sh start
 
     # Tail the tomcat log file to keep the container alive
-    tail -f /logs/catalina.out
+    tail -f /logs/kfs.log
 
     return;
 }
