@@ -12,6 +12,8 @@ echo_time() {
 }
 
 tomcat_start () {
+    #run logrotate on our log files
+    logrotate -f /etc/logrotate.conf
 
     # re-map the tomcat logs directory to our mapped container volume
     rm -f $TOMCAT_BASE_DIR/logs
@@ -134,9 +136,6 @@ tomcat_start () {
 
     cp $TOMCAT_CONFIG_DIRECTORY/setenv.sh $TOMCAT_SHARE_BIN/
     chmod +x $TOMCAT_SHARE_BIN/setenv.sh
-
-    #run logrotate on our log files
-    logrotate -f /etc/logrotate.conf
 	
 	#if rhubarb-config has not been deployed, deploy it
     log "Checking for existing rhubarb-config deployment..."
@@ -187,7 +186,7 @@ tomcat_start () {
     $TOMCAT_SHARE_BIN/catalina.sh start
 
     # Tail the tomcat log file to keep the container alive
-    tail -f /logs/kfs.log
+    tail -f /logs/kfs.log /logs/catalina.out
 
     return;
 }
