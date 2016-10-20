@@ -33,13 +33,13 @@ ENV RHUBARB_BASE=/var/opt/kuali/rhubarb
 ENV RHUBARB_HOME=/opt/kuali/rhubarb/rhubarb-1.0
 
 # Update Environment target versions
-ENV KFS_VERSION_DEV=ua-release20-SNAPSHOT
+ENV KFS_VERSION_DEV=ua-release21-SNAPSHOT
 ENV KFS_REPOSITORY_DEV=snapshots
 
-ENV KFS_VERSION_TST=ua-release20-SNAPSHOT
+ENV KFS_VERSION_TST=ua-release21-SNAPSHOT
 ENV KFS_REPOSITORY_TST=snapshots
 
-ENV KFS_VERSION_STG=ua-release19
+ENV KFS_VERSION_STG=ua-release20
 ENV KFS_REPOSITORY_STG=releases
 
 # copy in the new relic jar file
