@@ -1,4 +1,4 @@
-FROM easksd/tomcat7
+FROM uaecs/docker-eas-centos6-java7
 
 RUN groupadd -r kuali && useradd -r -g kuali kualiadm
 
@@ -24,16 +24,6 @@ ENV KFS_CONFIG_DIRECTORY=/configuration/kfs-config
 ENV TOMCAT_KFS_CORE_DIR=$TOMCAT_KFS_DIR/kfs-core-ua
 ENV UA_DB_CHANGELOGS_DIR=$TOMCAT_KFS_CORE_DIR/changelogs
 ENV UA_KFS_INSTITUTIONAL_CONFIG_DIR=$TOMCAT_KFS_DIR/kfs-core-ua
-
-# Update Environment target versions
-ENV KFS_VERSION_DEV=ua-release11-SNAPSHOT
-ENV KFS_REPOSITORY_DEV=snapshots
-
-ENV KFS_VERSION_TST=ua-release11-SNAPSHOT
-ENV KFS_REPOSITORY_TST=snapshots
-
-ENV KFS_VERSION_STG=ua-release10
-ENV KFS_REPOSITORY_STG=releases
 
 # copy in the new relic jar file
 COPY classes $TOMCAT_SHARE_LIB
