@@ -1,4 +1,4 @@
-FROM uaecs/docker-eas-centos6-java7
+FROM 760232551367.dkr.ecr.us-west-2.amazonaws.com/kuali/kfs6:tomcat7
 
 RUN groupadd -r kuali && useradd -r -g kuali kualiadm
 
