@@ -47,26 +47,29 @@ tomcat_start () {
 
     # Extract the WAR file
     cd $TOMCAT_KFS_DIR
-    jar -xf "$TOMCAT_KFS_DIR/kfs.war"
+    unzip "$TOMCAT_KFS_DIR/kfs.war"
 
 
     # copy in tomcat configuration files
     log "Copying tomcat configuration files."
     echo_time "Copying tomcat configuration files."
-    cp $TOMCAT_CONFIG_DIRECTORY/server.xml $TOMCAT_BASE_DIR/conf/
-    cp $SECURITY_DIRECTORY/tomcat-users.xml $TOMCAT_BASE_DIR/conf/
-    cp $TOMCAT_CONFIG_DIRECTORY/logging.properties $TOMCAT_BASE_DIR/conf
-    cp $TOMCAT_CONFIG_DIRECTORY/log4j.properties $TOMCAT_KFS_WEBINF_DIR/classes
+    # create directories if they don't exist
+    mkdir -p $TOMCAT_BASE_DIR/conf/
+    mkdir -p $TOMCAT_KFS_WEBINF_DIR/classes/
+    cp $TOMCAT_CONFIG_DIRECTORY/server.xml $TOMCAT_BASE_DIR/conf/server.xml
+    cp $SECURITY_DIRECTORY/tomcat-users.xml $TOMCAT_BASE_DIR/conf/tomcat-users.xml
+    cp $TOMCAT_CONFIG_DIRECTORY/logging.properties $TOMCAT_BASE_DIR/conf/logging.properties
+    cp $TOMCAT_CONFIG_DIRECTORY/log4j.properties $TOMCAT_KFS_WEBINF_DIR/classes/log4j.properties
 
     # copy in New Relic config file
     log "Copying New Relic configuration file."
     echo_time "Copying New Relic configuration file."
-    cp $SECURITY_DIRECTORY/newrelic.yml $TOMCAT_SHARE_LIB/
+    cp $SECURITY_DIRECTORY/newrelic.yml $TOMCAT_SHARE_LIB/newrelic.yml
 
     # copy in oracle JDBC drivers
     log "Copying oracle JDBC drivers."
     echo_time "Copying oracle JDBC drivers."
-    cp $TOMCAT_CONFIG_DIRECTORY/classes/* $TOMCAT_SHARE_LIB/
+    cp $TOMCAT_CONFIG_DIRECTORY/classes/* $TOMCAT_SHARE_LIB/*
 
     # Get changelogs for liquibase
 #    log "Loading changelog files for liquibase."
@@ -79,11 +82,11 @@ tomcat_start () {
     mkdir -p $UA_DB_CHANGELOGS_DIR
 
     # extract files in kfs-core-ua* jar
-    cd $TOMCAT_KFS_CORE_DIR
-    /usr/bin/jar -xf $TOMCAT_KFS_DIR/WEB-INF/lib/kfs-core-ua*
+    # cd $TOMCAT_KFS_CORE_DIR
+    unzip $TOMCAT_KFS_DIR/WEB-INF/lib/kfs-core-ua* -d $TOMCAT_KFS_CORE_DIR
 
     # copy edu changelog files to changelogs directory
-    mv $TOMCAT_KFS_CORE_DIR/edu $UA_DB_CHANGELOGS_DIR
+    mv $TOMCAT_KFS_CORE_DIR/edu/ $UA_DB_CHANGELOGS_DIR/
 
 	  # run liquibase here
 #    log "Running liquibase update."
@@ -95,7 +98,7 @@ tomcat_start () {
     log "SKIPPING liquibase update for AWS environments."
     echo_time "SKIPPING liquibase update for AWS environments."
 
-    cp $TOMCAT_CONFIG_DIRECTORY/setenv.sh $TOMCAT_SHARE_BIN/
+    cp $TOMCAT_CONFIG_DIRECTORY/setenv.sh $TOMCAT_SHARE_BIN/setenv.sh
     chmod +x $TOMCAT_SHARE_BIN/setenv.sh
 
     log "Starting up tomcat"
