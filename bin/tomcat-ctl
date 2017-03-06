@@ -1,4 +1,4 @@
-#!/bin/bash
+﻿#!/bin/bash
 
 KFS_STARTUP_LOG="kfs-startup.log"
 
@@ -81,6 +81,15 @@ tomcat_start () {
     # extract files in kfs-core-ua* jar
     cd $TOMCAT_KFS_CORE_DIR
     /usr/bin/jar -xf $TOMCAT_KFS_DIR/WEB-INF/lib/kfs-core-ua*
+
+#   Swap SMTP value to work for AWS
+	sed -i "s/mail.smtp.host=smtp.local/mail.smtp.host=email-smtp.us-west-2.amazonaws.com/" $TOMCAT_KFS_CORE_DIR/institutional-config.properties
+
+	sed -i "s/mail.smtp.port=25/mail.smtp.port=587/" $TOMCAT_KFS_CORE_DIR/institutional-config.properties
+
+	sed -i "s/mail.smtp.starttls.enable=false/mail.smtp.starttls.enable=true/" $TOMCAT_KFS_CORE_DIR/institutional-config.properties
+
+	sed -i "s/mail.smtp.auth=false/mail.smtp.auth=true/" $TOMCAT_KFS_CORE_DIR/institutional-config.properties
 
     # copy edu changelog files to changelogs directory
     mv $TOMCAT_KFS_CORE_DIR/edu $UA_DB_CHANGELOGS_DIR
