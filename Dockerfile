@@ -50,6 +50,9 @@ RUN mv /etc/cron.daily/logrotate /etc/cron.hourly/logrotate
 ADD logrotate /etc/logrotate.d/tomcat7
 RUN chmod 644 /etc/logrotate.d/tomcat7
 
+# Copy the Application WAR in
+COPY files/kfs.war $TOMCAT_KFS_DIR/kfs.war
+
 #set up SSH for Capistrano to use
 #some Ruby gems need make during install
 RUN apt-get update && apt-get install -y openssh-server make
