@@ -1,4 +1,4 @@
-FROM easksd/tomcat7
+FROM 760232551367.dkr.ecr.us-west-2.amazonaws.com/kuali/kfs6:tomcat7
 
 RUN groupadd -r kuali && useradd -r -g kuali kualiadm
 
@@ -9,9 +9,9 @@ COPY bin /usr/local/bin/
 RUN chmod +x /usr/local/bin/*
 
 # create some useful shorcut environment variables
-ENV TOMCAT_BASE_DIR=/var/lib/tomcat7
-ENV TOMCAT_SHARE_LIB=/usr/share/tomcat7/lib
-ENV TOMCAT_SHARE_BIN=/usr/share/tomcat7/bin
+ENV TOMCAT_BASE_DIR=$CATALINA_HOME
+ENV TOMCAT_SHARE_LIB=$TOMCAT_BASE_DIR/lib
+ENV TOMCAT_SHARE_BIN=$TOMCAT_BASE_DIR/bin
 ENV TOMCAT_WEBAPPS_DIR=$TOMCAT_BASE_DIR/webapps
 ENV TOMCAT_KFS_DIR=$TOMCAT_WEBAPPS_DIR/kfs
 ENV TOMCAT_KFS_WEBINF_DIR=$TOMCAT_KFS_DIR/WEB-INF
@@ -46,6 +46,7 @@ ENV KFS_REPOSITORY_STG=releases
 COPY classes $TOMCAT_SHARE_LIB
 
 # setup log rotate
+#FIXME cron is different (or maybe not installed yet?) in CentOS
 RUN mv /etc/cron.daily/logrotate /etc/cron.hourly/logrotate
 ADD logrotate /etc/logrotate.d/tomcat7
 RUN chmod 644 /etc/logrotate.d/tomcat7
