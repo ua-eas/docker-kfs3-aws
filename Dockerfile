@@ -56,7 +56,7 @@ COPY files/kfs.war $TOMCAT_KFS_DIR/kfs.war
 
 #set up SSH for Capistrano to use
 #some Ruby gems need make during install
-RUN apt-get update && apt-get install -y openssh-server make
+RUN yum update && yum install -y openssh-server make
 
 #set port to 2222 and listen address to 127.0.0.1
 RUN sed -i 's/Port 22/Port 2222/g' /etc/ssh/sshd_config
