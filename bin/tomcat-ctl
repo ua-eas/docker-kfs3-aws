@@ -47,26 +47,29 @@ tomcat_start () {
 
     # Extract the WAR file
     cd $TOMCAT_KFS_DIR
-    jar -xf "$TOMCAT_KFS_DIR/kfs.war"
+    unzip "$TOMCAT_KFS_DIR/kfs.war"
 
 
     # copy in tomcat configuration files
     log "Copying tomcat configuration files."
     echo_time "Copying tomcat configuration files."
-    cp $TOMCAT_CONFIG_DIRECTORY/server.xml $TOMCAT_BASE_DIR/conf/
-    cp $SECURITY_DIRECTORY/tomcat-users.xml $TOMCAT_BASE_DIR/conf/
-    cp $TOMCAT_CONFIG_DIRECTORY/logging.properties $TOMCAT_BASE_DIR/conf
-    cp $TOMCAT_CONFIG_DIRECTORY/log4j.properties $TOMCAT_KFS_WEBINF_DIR/classes
+    # create directories if they don't exist
+    mkdir -p $TOMCAT_BASE_DIR/conf/
+    mkdir -p $TOMCAT_KFS_WEBINF_DIR/classes/
+    cp $TOMCAT_CONFIG_DIRECTORY/server.xml $TOMCAT_BASE_DIR/conf/server.xml
+    cp $SECURITY_DIRECTORY/tomcat-users.xml $TOMCAT_BASE_DIR/conf/tomcat-users.xml
+    cp $TOMCAT_CONFIG_DIRECTORY/logging.properties $TOMCAT_BASE_DIR/conf/logging.properties
+    cp $TOMCAT_CONFIG_DIRECTORY/log4j.properties $TOMCAT_KFS_WEBINF_DIR/classes/log4j.properties
 
     # copy in New Relic config file
     log "Copying New Relic configuration file."
     echo_time "Copying New Relic configuration file."
-    cp $SECURITY_DIRECTORY/newrelic.yml $TOMCAT_SHARE_LIB/
+    cp $SECURITY_DIRECTORY/newrelic.yml $TOMCAT_SHARE_LIB/newrelic.yml
 
     # copy in oracle JDBC drivers
     log "Copying oracle JDBC drivers."
     echo_time "Copying oracle JDBC drivers."
-    cp $TOMCAT_CONFIG_DIRECTORY/classes/* $TOMCAT_SHARE_LIB/
+    cp $TOMCAT_CONFIG_DIRECTORY/classes/* $TOMCAT_SHARE_LIB/*
 
     # Get changelogs for liquibase
 #    log "Loading changelog files for liquibase."
@@ -79,8 +82,8 @@ tomcat_start () {
     mkdir -p $UA_DB_CHANGELOGS_DIR
 
     # extract files in kfs-core-ua* jar
-    cd $TOMCAT_KFS_CORE_DIR
-    /usr/bin/jar -xf $TOMCAT_KFS_DIR/WEB-INF/lib/kfs-core-ua*
+    # cd $TOMCAT_KFS_CORE_DIR
+    unzip $TOMCAT_KFS_DIR/WEB-INF/lib/kfs-core-ua* -d $TOMCAT_KFS_CORE_DIR
 
 #   Swap SMTP value to work for AWS
 	sed -i "s/mail.smtp.host=smtp.local/mail.smtp.host=email-smtp.us-west-2.amazonaws.com/" $TOMCAT_KFS_CORE_DIR/institutional-config.properties
@@ -92,7 +95,7 @@ tomcat_start () {
 	sed -i "s/mail.smtp.auth=false/mail.smtp.auth=true/" $TOMCAT_KFS_CORE_DIR/institutional-config.properties
 
     # copy edu changelog files to changelogs directory
-    mv $TOMCAT_KFS_CORE_DIR/edu $UA_DB_CHANGELOGS_DIR
+    mv $TOMCAT_KFS_CORE_DIR/edu/ $UA_DB_CHANGELOGS_DIR/
 
 	  # run liquibase here
 #    log "Running liquibase update."
@@ -104,8 +107,51 @@ tomcat_start () {
     log "SKIPPING liquibase update for AWS environments."
     echo_time "SKIPPING liquibase update for AWS environments."
 
-    cp $TOMCAT_CONFIG_DIRECTORY/setenv.sh $TOMCAT_SHARE_BIN/
+    cp $TOMCAT_CONFIG_DIRECTORY/setenv.sh $TOMCAT_SHARE_BIN/setenv.sh
     chmod +x $TOMCAT_SHARE_BIN/setenv.sh
+	
+	#if rhubarb-config has not been deployed, deploy it
+    log "Checking for existing rhubarb-config deployment..."
+    echo_time "Checking for existing rhubarb-config deployment..."
+    if [ ! -d /etc/opt/kuali/rhubarb ]
+    then
+        log "No rhubarb-config deployment found, deploying rhubarb"
+        echo_time "No rhubarb-config deployment found, deploying rhubarb"
+        startdir=$(pwd)
+        service ssh start
+        mkdir -p /git-clones
+        git clone "https://github.com/ua-eas/katt-kfs-rhubarb-config" /git-clones/katt-kfs-rhubarb-config
+        cd /git-clones/katt-kfs-rhubarb-config/ && bundle install
+        cd /git-clones/katt-kfs-rhubarb-config/ && cap local deploy
+        cd $startdir
+        rm -R /git-clones
+        service ssh stop
+    else
+        log "rhubarb-config already deployed, no action required"
+        echo_time "rhubarb-config already deployed, no action required"
+    fi
+    #if rhubarb has not been deployed, deploy it
+    log "Checking for existing rhubarb deployment..."
+    echo_time "Checking for existing rhubarb deployment..."
+    if [ ! -d /opt/kuali/rhubarb ]
+    then
+        log "No rhubarb deployment found, deploying rhubarb"
+        echo_time "No rhubarb deployment found, deploying rhubarb"
+        startdir=$(pwd)
+        service ssh start
+        mkdir -p /git-clones
+        git clone "https://github.com/ua-eas/katt-kfs-rhubarb" /git-clones/katt-kfs-rhubarb
+        cd /git-clones/katt-kfs-rhubarb/ && bundle install
+        cd /git-clones/katt-kfs-rhubarb/ && cap local deploy
+        cd $startdir
+        rm /transactional/work/control/*.runnable
+        touch /transactional/work/control/$HOSTNAME.runnable
+        rm -R /git-clones
+        service ssh stop
+    else
+        log "rhubarb already deployed, no action required"
+        echo_time "rhubarb already deployed, no action required"
+    fi
 
     log "Starting up tomcat"
     echo_time "Starting up tomcat"
