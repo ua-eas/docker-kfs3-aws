@@ -72,8 +72,8 @@ tomcat_start () {
     cp $TOMCAT_CONFIG_DIRECTORY/classes/* $TOMCAT_SHARE_LIB/*
 
     # Get changelogs for liquibase
-#    log "Loading changelog files for liquibase."
-#    echo_time "Loading changelog files for liquibase"
+    log "Loading changelog files for liquibase."
+    echo_time "Loading changelog files for liquibase"
 
     # create new directory to hold the files extracted from kfs-core-ua jar file
     mkdir -p $TOMCAT_KFS_CORE_DIR
@@ -85,28 +85,27 @@ tomcat_start () {
     # cd $TOMCAT_KFS_CORE_DIR
     unzip $TOMCAT_KFS_DIR/WEB-INF/lib/kfs-core-ua* -d $TOMCAT_KFS_CORE_DIR
 
-#   Swap SMTP value to work for AWS
-	sed -i "s/mail.smtp.host=smtp.local/mail.smtp.host=email-smtp.us-west-2.amazonaws.com/" $TOMCAT_KFS_CORE_DIR/institutional-config.properties
-
-	sed -i "s/mail.smtp.port=25/mail.smtp.port=587/" $TOMCAT_KFS_CORE_DIR/institutional-config.properties
-
-	sed -i "s/mail.smtp.starttls.enable=false/mail.smtp.starttls.enable=true/" $TOMCAT_KFS_CORE_DIR/institutional-config.properties
-
-	sed -i "s/mail.smtp.auth=false/mail.smtp.auth=true/" $TOMCAT_KFS_CORE_DIR/institutional-config.properties
-
     # copy edu changelog files to changelogs directory
     mv $TOMCAT_KFS_CORE_DIR/edu/ $UA_DB_CHANGELOGS_DIR/
 
 	  # run liquibase here
-#    log "Running liquibase update."
-#    echo_time "Running liquibase update."
-#	  liquibase_update_kfs.sh $APP_VERSION
+    # tag with KFS_ENV_NAME until we figure out how to pass in build version like on-premise docker container work
+    log "Running liquibase update."
+    echo_time "Running liquibase update."
+	  liquibase_update_kfs.sh $KFS_ENV_NAME
 
-#    log "Completed running liquibase update"
-#    echo_time "Completed running liquibase update"
+    log "Completed running liquibase update"
+    echo_time "Completed running liquibase update"
     log "SKIPPING liquibase update for AWS environments."
     echo_time "SKIPPING liquibase update for AWS environments."
 
+    # Swap SMTP value to work for AWS
+	  sed -i "s/mail.smtp.host=smtp.local/mail.smtp.host=email-smtp.us-west-2.amazonaws.com/" $TOMCAT_KFS_CORE_DIR/institutional-config.properties
+   	sed -i "s/mail.smtp.port=25/mail.smtp.port=587/" $TOMCAT_KFS_CORE_DIR/institutional-config.properties
+	  sed -i "s/mail.smtp.starttls.enable=false/mail.smtp.starttls.enable=true/" $TOMCAT_KFS_CORE_DIR/institutional-config.properties
+	  sed -i "s/mail.smtp.auth=false/mail.smtp.auth=true/" $TOMCAT_KFS_CORE_DIR/institutional-config.properties
+
+    # set up setenv.sh script for export of environment variables
     cp $TOMCAT_CONFIG_DIRECTORY/setenv.sh $TOMCAT_SHARE_BIN/setenv.sh
     chmod +x $TOMCAT_SHARE_BIN/setenv.sh
 	
