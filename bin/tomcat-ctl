@@ -96,8 +96,6 @@ tomcat_start () {
 
     log "Completed running liquibase update"
     echo_time "Completed running liquibase update"
-    log "SKIPPING liquibase update for AWS environments."
-    echo_time "SKIPPING liquibase update for AWS environments."
 
     # Swap SMTP value to work for AWS
     sed -i "s/mail.smtp.host=smtp.local/mail.smtp.host=email-smtp.us-west-2.amazonaws.com/" $TOMCAT_KFS_CORE_DIR/institutional-config.properties
