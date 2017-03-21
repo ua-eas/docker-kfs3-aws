@@ -150,6 +150,30 @@ tomcat_start () {
         echo_time "rhubarb already deployed, no action required"
     fi
 
+    # FIXME kinda awful hack
+    # hydrate spring-datasources.xml with values from security properties file
+    PROP_FILE=/security/uaf-security-config.properties
+    DATASOURCE_URL=`grep "kfs.datasource.url" $PROP_FILE | cut -d'=' -f 2-`
+    DATASOURCE_USER=`grep "kfs.datasource.username" $PROP_FILE | cut -d'=' -f 2-`
+    DATASOURCE_PASS=`grep "kfs.datasource.password" $PROP_FILE | cut -d'=' -f 2-`
+
+    sed -i "s/\${datasource.driver.class}/oracle.jdbc.driver.OracleDriver/g" $TOMCAT_KFS_DIR/WEB-INF/classes/spring-datasources.xml
+    sed -i "s/\${datasource.validating.query}/select 1 from dual/g" $TOMCAT_KFS_DIR/WEB-INF/classes/spring-datasources.xml
+    sed -i "s/\${datasource.url}/$DATASOURCE_URL/g" $TOMCAT_KFS_DIR/WEB-INF/classes/spring-datasources.xml
+    sed -i "s/\${datasource.username}/$DATASOURCE_USER/g" $TOMCAT_KFS_DIR/WEB-INF/classes/spring-datasources.xml
+    sed -i "s/\${datasource.password}/$DATASOURCE_PASS/g" $TOMCAT_KFS_DIR/WEB-INF/classes/spring-datasources.xml
+
+    sed -i "s/\${datasource.pool.size}/50/g" $TOMCAT_KFS_DIR/WEB-INF/classes/spring-datasources.xml
+    sed -i "s/\${datasource.connection.timeout}/30000/g" $TOMCAT_KFS_DIR/WEB-INF/classes/spring-datasources.xml
+    sed -i "s/\${datasource.maximum.cached.preparedstatements}/500/g" $TOMCAT_KFS_DIR/WEB-INF/classes/spring-datasources.xml
+    sed -i "s/\${datasource.xapool.connection.test.mode}/2/g" $TOMCAT_KFS_DIR/WEB-INF/classes/spring-datasources.xml
+
+    sed -i "s/\${rice.server.datasource.driver.class}/oracle.jdbc.driver.OracleDriver/g" $TOMCAT_KFS_DIR/WEB-INF/classes/spring-datasources.xml
+    sed -i "s/\${rice.server.datasource.validating.query}/select 1 from dual/g" $TOMCAT_KFS_DIR/WEB-INF/classes/spring-datasources.xml
+    sed -i "s/\${rice.server.datasource.url}/$DATASOURCE_URL/g" $TOMCAT_KFS_DIR/WEB-INF/classes/spring-datasources.xml
+    sed -i "s/\${rice.server.datasource.username}/$DATASOURCE_USER/g" $TOMCAT_KFS_DIR/WEB-INF/classes/spring-datasources.xml
+    sed -i "s/\${rice.server.datasource.password}/$DATASOURCE_PASS/g" $TOMCAT_KFS_DIR/WEB-INF/classes/spring-datasources.xml
+
     log "Starting up tomcat"
     echo_time "Starting up tomcat"
 
