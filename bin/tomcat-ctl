@@ -150,15 +150,6 @@ tomcat_start () {
         echo_time "rhubarb already deployed, no action required"
     fi
 
-    # FIXME kinda awful hack
-    # hydrate web.xml with value from uaf-kfs-config.properties file
-    APPLICATION_PROP_FILE=/configuration/kfs-config/uaf-kfs-config.properties
-    APPLICATION_BASE_URL=`grep "base.url" $APPLICATION_PROP_FILE | cut -d'=' -f 2-`
-    
-    # rather than escaping all the slashes, use asterisk as delimiter
-    #  sed can use any delimiter, slash is just used by convention
-    sed -i "s*<param-value>http://localhost:8080</param-value>*<param-value>$APPLICATION_BASE_URL</param-value>*g" $TOMCAT_KFS_DIR/WEB-INF/web.xml
-
     log "Starting up tomcat"
     echo_time "Starting up tomcat"
 
