@@ -47,7 +47,7 @@ tomcat_start () {
 
     # Extract the WAR file
     cd $TOMCAT_KFS_DIR
-    unzip "$TOMCAT_KFS_DIR/kfs.war"
+    unzip -qf "$TOMCAT_KFS_DIR/kfs.war"
 
 
     # copy in tomcat configuration files
@@ -83,7 +83,7 @@ tomcat_start () {
 
     # extract files in kfs-core-ua* jar
     # cd $TOMCAT_KFS_CORE_DIR
-    unzip $TOMCAT_KFS_DIR/WEB-INF/lib/kfs-core-ua* -d $TOMCAT_KFS_CORE_DIR
+    unzip -qf $TOMCAT_KFS_DIR/WEB-INF/lib/kfs-core-ua* -d $TOMCAT_KFS_CORE_DIR
 
     # copy edu changelog files to changelogs directory
     mv $TOMCAT_KFS_CORE_DIR/edu/ $UA_DB_CHANGELOGS_DIR/
