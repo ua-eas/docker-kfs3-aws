@@ -109,49 +109,6 @@ tomcat_start () {
     # set up setenv.sh script for export of environment variables
     cp $TOMCAT_CONFIG_DIRECTORY/setenv.sh $TOMCAT_SHARE_BIN/setenv.sh
     chmod +x $TOMCAT_SHARE_BIN/setenv.sh
-	
-	#if rhubarb-config has not been deployed, deploy it
-    log "Checking for existing rhubarb-config deployment..."
-    echo_time "Checking for existing rhubarb-config deployment..."
-    if [ ! -d /etc/opt/kuali/rhubarb ]
-    then
-        log "No rhubarb-config deployment found, deploying rhubarb"
-        echo_time "No rhubarb-config deployment found, deploying rhubarb"
-        startdir=$(pwd)
-        service ssh start
-        mkdir -p /git-clones
-        git clone "https://github.com/ua-eas/katt-kfs-rhubarb-config" /git-clones/katt-kfs-rhubarb-config
-        cd /git-clones/katt-kfs-rhubarb-config/ && bundle install
-        cd /git-clones/katt-kfs-rhubarb-config/ && cap local deploy
-        cd $startdir
-        rm -R /git-clones
-        service ssh stop
-    else
-        log "rhubarb-config already deployed, no action required"
-        echo_time "rhubarb-config already deployed, no action required"
-    fi
-    #if rhubarb has not been deployed, deploy it
-    log "Checking for existing rhubarb deployment..."
-    echo_time "Checking for existing rhubarb deployment..."
-    if [ ! -d /opt/kuali/rhubarb ]
-    then
-        log "No rhubarb deployment found, deploying rhubarb"
-        echo_time "No rhubarb deployment found, deploying rhubarb"
-        startdir=$(pwd)
-        service ssh start
-        mkdir -p /git-clones
-        git clone "https://github.com/ua-eas/katt-kfs-rhubarb" /git-clones/katt-kfs-rhubarb
-        cd /git-clones/katt-kfs-rhubarb/ && bundle install
-        cd /git-clones/katt-kfs-rhubarb/ && cap local deploy
-        cd $startdir
-        rm /transactional/work/control/*.runnable
-        touch /transactional/work/control/$HOSTNAME.runnable
-        rm -R /git-clones
-        service ssh stop
-    else
-        log "rhubarb already deployed, no action required"
-        echo_time "rhubarb already deployed, no action required"
-    fi
 
     log "Starting up tomcat"
     echo_time "Starting up tomcat"
