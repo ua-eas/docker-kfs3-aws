@@ -54,7 +54,7 @@ COPY files/kfs.war $TOMCAT_KFS_DIR/kfs.war
 # Install Sendmail Services -UAFAWS-311
 #http://docs.aws.amazon.com/ses/latest/DeveloperGuide/sendmail.html
 
-RUN  sudo apt-get -q -y install sendmail
+RUN  yum -y install sendmail
 # Edit /etc/mail/authinfo
 COPY sendmail/authinfo /etc/mail/authinfo
 RUN touch /etc/mail/authinfo
