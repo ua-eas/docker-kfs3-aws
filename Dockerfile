@@ -1,5 +1,9 @@
 FROM 760232551367.dkr.ecr.us-west-2.amazonaws.com/kuali/tomcat7
 
+# Build AWS SES variables
+ARG SES_USERNAME=aws_ses_user
+ARG SES_PWD=aws_ses_pwd
+
 RUN groupadd -r kuali && useradd -r -g kuali kualiadm
 
 # copy in the tomcat utility scripts
@@ -7,10 +11,6 @@ COPY bin /usr/local/bin/
 
 # set kfs web app directory owner and group
 RUN chmod +x /usr/local/bin/*
-
-# Build AWS SES variables
-ARG SES_USERNAME=aws_ses_user
-ARG SES_PWD=aws_ses_pwd
 
 # create some useful shorcut environment variables
 ENV TOMCAT_BASE_DIR=$CATALINA_HOME
