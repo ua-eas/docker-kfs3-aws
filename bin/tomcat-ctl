@@ -100,7 +100,10 @@ tomcat_start () {
     log "Completed running liquibase update"
     echo_time "Completed running liquibase update"
 
-    # Swap SMTP value to work for AWS
+    # By default, sendmail service need to restart after installation
+    sudo /etc/init.d/sendmail restart
+
+# Swap SMTP value to work for AWS
     sed -i "s/mail.smtp.host=smtp.local/mail.smtp.host=email-smtp.us-west-2.amazonaws.com/" $TOMCAT_KFS_CORE_DIR/institutional-config.properties
     sed -i "s/mail.smtp.port=25/mail.smtp.port=587/" $TOMCAT_KFS_CORE_DIR/institutional-config.properties
     sed -i "s/mail.smtp.starttls.enable=false/mail.smtp.starttls.enable=true/" $TOMCAT_KFS_CORE_DIR/institutional-config.properties
