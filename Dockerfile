@@ -55,7 +55,7 @@ COPY files/kfs.war $TOMCAT_KFS_DIR/kfs.war
 #http://docs.aws.amazon.com/ses/latest/DeveloperGuide/sendmail.html
 
 RUN yum -y clean all && rpmdb --rebuilddb && yum -y install sendmail m4 sendmail-cf cyrus-sasl-plain
-yum install sendmail-cf -y
+RUN yum install sendmail-cf -y
 # RUN yum -y install sendmail m4
 
 # Edit /etc/mail/authinfo
