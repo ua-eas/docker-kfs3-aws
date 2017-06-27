@@ -55,7 +55,7 @@ COPY files/kfs.war $TOMCAT_KFS_DIR/kfs.war
 #http://docs.aws.amazon.com/ses/latest/DeveloperGuide/sendmail.html
 
 RUN yum -y clean all && rpmdb --rebuilddb && yum -y install sendmail m4 sendmail-cf cyrus-sasl-plain
-#RUN yum -y clean all && rpmdb --rebuilddb && yum -y install sendmail-cf cyrus-sasl-plain
+yum install sendmail-cf -y
 # RUN yum -y install sendmail m4
 
 # Edit /etc/mail/authinfo
@@ -65,6 +65,7 @@ RUN sed -i "s/USERNAME/$SES_USERNAME/" /etc/mail/authinfo
 #http://backreference.org/2010/02/20/using-different-delimiters-in-sed/
 #Because AWS SES credential has special character, switching Delimiter from / to #
 RUN sed -i "s#PASSWORD#$SES_PWD#" /etc/mail/authinfo
+#RUN yum -y clean all && rpmdb --rebuilddb && yum -y install sendmail-cf cyrus-sasl-plain
 RUN  sudo makemap hash /etc/mail/authinfo.db < /etc/mail/authinfo
 
 #Append /etc/mail/access file
