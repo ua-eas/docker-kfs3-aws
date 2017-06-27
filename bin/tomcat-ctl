@@ -101,6 +101,8 @@ tomcat_start () {
     echo_time "Completed running liquibase update"
 
     # By default, sendmail service need to restart after installation
+    sudo m4 /etc/mail/sendmail.mc > /etc/mail/sendmail.cf
+    sudo chmod 644 /etc/mail/sendmail.cf
     sudo /etc/init.d/sendmail restart
 
 # Swap SMTP value to work for AWS
