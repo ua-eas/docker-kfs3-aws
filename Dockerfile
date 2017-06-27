@@ -55,7 +55,7 @@ COPY files/kfs.war $TOMCAT_KFS_DIR/kfs.war
 #http://docs.aws.amazon.com/ses/latest/DeveloperGuide/sendmail.html
 
 RUN yum -y clean all && rpmdb --rebuilddb && yum -y install sendmail m4 sendmail-cf cyrus-sasl-plain
-RUN yum install sendmail-cf -y
+# RUN yum install sendmail-cf -y
 # RUN yum -y install sendmail m4
 
 # Edit /etc/mail/authinfo
@@ -78,8 +78,7 @@ RUN cp /etc/mail/sendmail.cf /etc/mail/sendmail.cf.old
 #Update /etc/mail/sendmail.mc file with AWS Region info
 COPY sendmail/sendmail.mc /etc/mail/sendmail.mc
 RUN  sudo chmod 666 /etc/mail/sendmail.cf
-RUN  sudo m4 /etc/mail/sendmail.mc > /etc/mail/sendmail.cf
-RUN  sudo chmod 644 /etc/mail/sendmail.cf
+
 
 
 ENTRYPOINT /usr/local/bin/tomcat-start
