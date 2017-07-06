@@ -103,11 +103,9 @@ tomcat_start () {
     # By default, sendmail service need to restart after installation
     sudo /etc/init.d/sendmail restart
 
-# Swap SMTP value to work for AWS
-    sed -i "s/mail.smtp.host=smtp.local/mail.smtp.host=email-smtp.us-west-2.amazonaws.com/" $TOMCAT_KFS_CORE_DIR/institutional-config.properties
-    sed -i "s/mail.smtp.port=25/mail.smtp.port=587/" $TOMCAT_KFS_CORE_DIR/institutional-config.properties
-    sed -i "s/mail.smtp.starttls.enable=false/mail.smtp.starttls.enable=true/" $TOMCAT_KFS_CORE_DIR/institutional-config.properties
-    sed -i "s/mail.smtp.auth=false/mail.smtp.auth=true/" $TOMCAT_KFS_CORE_DIR/institutional-config.properties
+# Swap SMTP value to work for KFS 3 in AWS
+    sed -i "s/mail.relay.server=smtpgate.email.arizona.edu/mail.relay.server=localhost" $TOMCAT_KFS_DIR/WEB-INF/classes/configuration.properties
+    sed -i '/mail.relay.server=localhost /a mail.smtp.host=email-localhost" $TOMCAT_KFS_DIR/WEB-INF/classes/configuration.properties
 
     # set up setenv.sh script for export of environment variables
     cp $TOMCAT_CONFIG_DIRECTORY/setenv.sh $TOMCAT_SHARE_BIN/setenv.sh
