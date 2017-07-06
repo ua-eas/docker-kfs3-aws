@@ -105,7 +105,7 @@ tomcat_start () {
 
 # Swap SMTP value to work for KFS 3 in AWS
     sed -i "s/mail.relay.server=smtpgate.email.arizona.edu/mail.relay.server=localhost" $TOMCAT_KFS_DIR/WEB-INF/classes/configuration.properties
-    sed -i '/mail.relay.server=localhost /a mail.smtp.host=email-localhost" $TOMCAT_KFS_DIR/WEB-INF/classes/configuration.properties
+    sed -i '/mail.relay.server=localhost /a mail.smtp.host=email-localhost' $TOMCAT_KFS_DIR/WEB-INF/classes/configuration.properties
 
     # set up setenv.sh script for export of environment variables
     cp $TOMCAT_CONFIG_DIRECTORY/setenv.sh $TOMCAT_SHARE_BIN/setenv.sh
