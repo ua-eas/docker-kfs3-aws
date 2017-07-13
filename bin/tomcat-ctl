@@ -130,7 +130,7 @@ tomcat_stop() {
     log "Stopping Tomcat application server tomcat ..."
     echo_time "Stopping Tomcat application server tomcat ..."
 
-    /usr/share/tomcat7/bin/catalina.sh stop
+    $TOMCAT_SHARE_BIN/catalina.sh stop
 
     sleep 3
 
