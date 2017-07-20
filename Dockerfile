@@ -4,6 +4,10 @@ FROM 760232551367.dkr.ecr.us-west-2.amazonaws.com/kuali/tomcat7
 ARG SES_USERNAME=aws_ses_user
 ARG SES_PWD=aws_ses_pwd
 
+#Environment type for application context path
+# .../kfs-stg/portal.do, .../kfs-tst/portal.do, etc.
+ARG KFS_ENV_NAME=stg
+
 RUN groupadd -r kuali && useradd -r -g kuali kualiadm
 
 # copy in the tomcat utility scripts
@@ -17,7 +21,7 @@ ENV TOMCAT_BASE_DIR=$CATALINA_HOME
 ENV TOMCAT_SHARE_LIB=$TOMCAT_BASE_DIR/lib
 ENV TOMCAT_SHARE_BIN=$TOMCAT_BASE_DIR/bin
 ENV TOMCAT_WEBAPPS_DIR=$TOMCAT_BASE_DIR/webapps
-ENV TOMCAT_KFS_DIR=$TOMCAT_WEBAPPS_DIR/kfs-aws
+ENV TOMCAT_KFS_DIR=$TOMCAT_WEBAPPS_DIR/kfs-$KFS_ENV_NAME
 ENV TOMCAT_KFS_WEBINF_DIR=$TOMCAT_KFS_DIR/WEB-INF
 ENV TRANSACTIONAL_DIRECTORY=/transactional
 ENV CONFIG_DIRECTORY=/configuration
