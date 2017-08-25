@@ -1,9 +1,5 @@
 FROM 760232551367.dkr.ecr.us-west-2.amazonaws.com/kuali/tomcat7
 
-# Build AWS SES variables
-ARG SES_USERNAME=aws_ses_user
-ARG SES_PWD=aws_ses_pwd
-
 #Environment type for application context path
 # .../kfs-stg/portal.do, .../kfs-tst/portal.do, etc.
 ARG KFS_ENV_NAME=stg
@@ -59,16 +55,6 @@ COPY files/kfs.war $TOMCAT_KFS_DIR/kfs.war
 #http://docs.aws.amazon.com/ses/latest/DeveloperGuide/sendmail.html
 
 RUN yum -y clean all && rpmdb --rebuilddb && yum -y install sendmail m4 sendmail-cf cyrus-sasl-plain
-
-# Edit /etc/mail/authinfo
-COPY sendmail/authinfo /etc/mail/authinfo
-RUN touch /etc/mail/authinfo
-RUN sed -i "s/USERNAME/$SES_USERNAME/" /etc/mail/authinfo
-#http://backreference.org/2010/02/20/using-different-delimiters-in-sed/
-#Because AWS SES credential has special character, switching Delimiter from / to #
-RUN sed -i "s#PASSWORD#$SES_PWD#" /etc/mail/authinfo
-#RUN yum -y clean all && rpmdb --rebuilddb && yum -y install sendmail-cf cyrus-sasl-plain
-RUN  sudo makemap hash /etc/mail/authinfo.db < /etc/mail/authinfo
 
 #Append /etc/mail/access file
 RUN echo "Connect:email-smtp.us-west-2.amazonaws.com RELAY" >> /etc/mail/access
