@@ -23,6 +23,7 @@ ENV TRANSACTIONAL_DIRECTORY=/transactional
 ENV CONFIG_DIRECTORY=/configuration
 ENV LOGS_DIRECTORY=/logs
 ENV SECURITY_DIRECTORY=/security
+ENV RHUBARB_DIRECTORY=/security/rhubarb-security
 ENV TOMCAT_CONFIG_DIRECTORY=/configuration/tomcat-config
 ENV KFS_CONFIG_DIRECTORY=/configuration/kfs-config
 ENV TOMCAT_KFS_CORE_DIR=$TOMCAT_KFS_DIR/kfs-core-ua

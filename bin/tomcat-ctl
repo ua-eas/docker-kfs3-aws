@@ -107,9 +107,10 @@ tomcat_start () {
     sed -i "s/mail.relay.server=smtpgate.email.arizona.edu/mail.relay.server=localhost/" $TOMCAT_KFS_DIR/WEB-INF/classes/configuration.properties
     sed -i "s/mail.smtp.host=smtpgate.email.arizona.edu/mail.smtp.host=localhost/" $TOMCAT_KFS_DIR/WEB-INF/classes/configuration.properties
     
-    # UAFAWS-311 Copy authinfo and regenerate authinfo.db after initial file creation on EC2 instance via CF and OpsWorks
+    # UAFAWS-311 Copy authinfo and Regenerate authinfo.db after initial file creation via CF and OpsWorks
+    # UAFAWS-430 Changed directory to match what is set up for Rhubarb
     # Related documentation: http://docs.aws.amazon.com/ses/latest/DeveloperGuide/sendmail.html
-    cp $SECURITY_DIRECTORY/authinfo /etc/mail/
+    cp $RHUBARB_DIRECTORY/authinfo /etc/mail/
     makemap hash /etc/mail/authinfo.db < /etc/mail/authinfo
       
     # set up setenv.sh script for export of environment variables
